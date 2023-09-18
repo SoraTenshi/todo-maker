@@ -18,13 +18,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let task_str = args[1..].join(" ");
     let task = Task{ task: task_str };
 
-    let ubersicht_widget: PathBuf = home_dir().map(|mut p| {
+    let widget: PathBuf = home_dir().map(|mut p| {
         p.push(".config/data.json");
         p
-    }).expect("ubersicht widget path exists");
-    let ubersicht_widget = fs::read_link(ubersicht_widget)?;
+    }).expect("widget path exists");
+    let widget = fs::read_link(widget.clone()).unwrap_or(widget);
 
-    let mut file = File::create(ubersicht_widget)?;
+    let mut file = File::create(widget)?;
     let json = to_string(&task)?;
     file.write_all(json.as_bytes())?;
 
